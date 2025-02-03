@@ -12,7 +12,7 @@ In this paper, we propose _**SimMark**_, a posthoc watermarking algorithm that m
 By leveraging the similarity of semantic sentence embeddings and rejection sampling to impose detectable statistical patterns imperceptible to humans, and employing a _soft_ counting mechanism, _SimMark_ achieves robustness against paraphrasing attacks.
 Experimental results demonstrate that _SimMark_ sets a new benchmark for robust watermarking of LLM-generated content, surpassing prior sentence-level watermarking techniques in robustness, sampling efficiency, and applicability across diverse domains, all while preserving the text quality.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/1550a812-fd1b-49a4-bb38-8a63b207773b" alt="image">
+  <img src="https://github.com/user-attachments/assets/1550a812-fd1b-49a4-bb38-8a63b207773b" alt="image" width="67%">
 </div>
 
 The input text is divided into individual sentences $`X_1`$ to $`X_N`$, which are embedded using a semantic embedding model, with optional PCA for dimensionality reduction. 
