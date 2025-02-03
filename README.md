@@ -3,7 +3,7 @@
 <p align="center">
   <br>
   <a href="??"><img alt="Paper" src="https://img.shields.io/badge/📃-Paper-808080"></a>
-  <a href="https://simmark.github.io/"><img alt="Website" src="https://img.shields.io/badge/%F0%9F%8C%90-Website-008080"></a>
+  <a href="https://simmark-llm.github.io/"><img alt="Website" src="https://img.shields.io/badge/%F0%9F%8C%90-Website-008080"></a>
 </p>
 
 ## Abstract
@@ -27,13 +27,18 @@ For each newly generated sentence ($X_{i+1}$), its embedding ($e_{i+1}$) is comp
 The cosine similarity (or Euclidean distance) between $e_{i+1}$ and the embedding of the previous sentence ($e_i$), denoted as $s_{i+1}$, is calculated. If $s_{i+1}$ lies within the predefined interval $`[a, b]`$, the sentence is marked $`\color{ForestGreen}\textbf{valid}`$ and accepted.  
 Otherwise, rejection sampling generates a new candidate sentence until validity is achieved or the iteration limit is reached. Once a sentence is accepted, the process repeats for subsequent sentences.  
 
-Bottom: ***Detection (+ Paraphrase attack)***.  
-Paraphrased versions of watermarked sentences are generated ($Y_{i}$), and their embeddings ($`e'_{i}`$) are computed. The similarity (or distance) between consecutive sentences in the paraphrased text is evaluated. If paraphrasing causes the similarity ($`s'_{i+1}`$) to fall outside $`[a, b]`$, it is mismarked as $`\textcolor{BrickRed}{\textbf{invalid}}`$.  
+Bottom: ***Detection (+ Paraphrase attack)***.  Paraphrased versions of watermarked sentences are generated ($Y_{i}$), and their embeddings ($`e'_{i}`$) are computed. The similarity (or distance) between consecutive sentences in the paraphrased text is evaluated. If paraphrasing causes the similarity ($`s'_{i+1}`$) to fall outside $`[a, b]`$, it is mismarked as $`\textcolor{BrickRed}{\textbf{invalid}}`$.  
 A *soft counting* mechanism (via function $c(s_{i+1})$ instead of a regular counting with a step function in the interval $`[a, b]`$) quantifies partial validity based on proximity to the interval bounds, enabling detection of watermarked text via the ***soft***-$`z`$-test even under paraphrase attacks.  
 It should be emphasized that soft counting is always applied during detection, regardless of whether paraphrasing is present or not, as we cannot assume prior knowledge of paraphrasing.
 
+## Performance
+![image](https://github.com/user-attachments/assets/7a947de7-f1b9-4a86-a1a3-4f2391c57420)
+Performance of different algorithms across datasets and paraphrasers, evaluated using <b>ROC-AUC↑</b>, <b>TP@FP=1%↑</b>, and <b>TP@FP=5%↑</b>, respectively, reported from left to right. Higher values indicate better performance across all metrics.
+In each column, <b>bold</b> values indicate the best performance for a given dataset and metric, while <u>underlined</u> values denote the second-best. 
+**<i>SimMark</i> consistently outperforms or is on par with other state-of-the-art methods across datasets and paraphrasers, and it is the best on average.**
+
 ## Code
-Coming soon!
+Coming Soon!
 
 ## Citation
 If you found this repository helpful, please don't forget to cite our paper:
