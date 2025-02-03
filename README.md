@@ -22,18 +22,22 @@ A _**soft**_-$`z`$-test is performed using the _soft_ count of $`\textcolor{Bric
 ## Overview of SimMark: A Similarity-Based Watermark
 ![image](https://github.com/user-attachments/assets/350a1c4b-de05-486c-8c50-4b5577130c10)
 
-**Top:** ***Generation***. For each newly generated sentence ($X_{i+1}$), its embedding ($e_{i+1}$) is computed using the Instructor-Large model, optionally applying PCA for dimensionality reduction.  
+Top: ***Generation***.
+For each newly generated sentence ($X_{i+1}$), its embedding ($e_{i+1}$) is computed using the Instructor-Large model, optionally applying PCA for dimensionality reduction.  
 The cosine similarity (or Euclidean distance) between $e_{i+1}$ and the embedding of the previous sentence ($e_i$), denoted as $s_{i+1}$, is calculated. If $s_{i+1}$ lies within the predefined interval $`[a, b]`$, the sentence is marked $`\color{ForestGreen}\textbf{valid}`$ and accepted.  
 Otherwise, rejection sampling generates a new candidate sentence until validity is achieved or the iteration limit is reached. Once a sentence is accepted, the process repeats for subsequent sentences.  
 
-**Bottom:** ***Detection (+ Paraphrase attack)***.  
+Bottom: ***Detection (+ Paraphrase attack)***.  
 Paraphrased versions of watermarked sentences are generated ($Y_{i}$), and their embeddings ($`e'_{i}`$) are computed. The similarity (or distance) between consecutive sentences in the paraphrased text is evaluated. If paraphrasing causes the similarity ($`s'_{i+1}`$) to fall outside $`[a, b]`$, it is mismarked as $`\textcolor{BrickRed}{\textbf{invalid}}`$.  
 A *soft counting* mechanism (via function $c(s_{i+1})$ instead of a regular counting with a step function in the interval $`[a, b]`$) quantifies partial validity based on proximity to the interval bounds, enabling detection of watermarked text via the ***soft***-$`z`$-test even under paraphrase attacks.  
 It should be emphasized that soft counting is always applied during detection, regardless of whether paraphrasing is present or not, as we cannot assume prior knowledge of paraphrasing.
 
+## Code
+Coming soon!
+
 ## Citation
 If you found this repository helpful, please don't forget to cite our paper:
-
 ```BibTeX
 
 ```
+If you have any questions, please feel free to contact  [amirhossein@ece.ubc.ca](mailto:amirhossein@ece.ubc.ca).
