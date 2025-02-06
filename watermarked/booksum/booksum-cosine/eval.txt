@@ -1,0 +1,1 @@
+gen_ppl			tri_entro	sem_ent

@@ -20,8 +20,9 @@ The similarity between consecutive sentence embeddings is computed. Sentences wi
 A _**soft**_-$`z`$-test is performed using the _soft_ count of $`\textcolor{BrickRed}{\mathrm{invalid/partially-valid}}`$ sentences to determine whether the text is watermarked.
 
 ## Overview of SimMark: A Similarity-Based Watermark
-![image](https://github.com/user-attachments/assets/350a1c4b-de05-486c-8c50-4b5577130c10)
-
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/ed15124e-8c33-44fe-8363-dcad810d9f59" alt="image">
+</div>
 Top: ***Generation***.
 For each newly generated sentence ($X_{i+1}$), its embedding ($e_{i+1}$) is computed using the Instructor-Large model, optionally applying PCA for dimensionality reduction.  
 The cosine similarity (or Euclidean distance) between $e_{i+1}$ and the embedding of the previous sentence ($e_i$), denoted as $s_{i+1}$, is calculated. If $s_{i+1}$ lies within the predefined interval $`[a, b]`$, the sentence is marked $`\color{ForestGreen}\textbf{valid}`$ and accepted.  
@@ -32,17 +33,108 @@ A *soft counting* mechanism (via function $c(s_{i+1})$ instead of a regular coun
 It should be emphasized that soft counting is always applied during detection, regardless of whether paraphrasing is present or not, as we cannot assume prior knowledge of paraphrasing.
 
 ## Performance
-![image](https://github.com/user-attachments/assets/7a947de7-f1b9-4a86-a1a3-4f2391c57420)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/7a947de7-f1b9-4a86-a1a3-4f2391c57420" alt="image">
+</div>
 Performance of different algorithms across datasets and paraphrasers, evaluated using <b>ROC-AUC↑</b>, <b>TP@FP=1%↑</b>, and <b>TP@FP=5%↑</b>, respectively, reported from left to right. Higher values indicate better performance across all metrics.
 In each column, <b>bold</b> values indicate the best performance for a given dataset and metric, while <u>underlined</u> values denote the second-best. 
 **<i>SimMark</i> consistently outperforms or is on par with other state-of-the-art methods across datasets and paraphrasers, and it is the best on average.**
 
-## Code
-Coming Soon!
+## How To Run?
+### Installation
+1. Clone this repository:
+```
+git clone https://github.com/DabiriAghdam/SimMark.git
+```
+2. Create a virtual environment (recommended), and then install dependencies: 
+```
+    pip3 install -r requirements.txt
+```
+3. Then run following commands to download the necessary data:
+```
+    python3 load_punkt_tab.py
+    python3 load_c4.py
+    python3 load_booksum.py
+    python3 load_tifu.py
+```
+### Reproducing our results (requires GPU)
+#### For RealNews dataset as an example you can run the follwing:
+1. **Without paraphrase**:
+  - _Cosine-SimMark_:  
+  ```
+  python3 detection.py watermarked/c4/c4-cosine  --human_text human/c4  --mode cosine --a 0.68 --b 0.76 
+  ```
+  - _Euclidean-SimMark_:  
+  ```
+  python3 detection.py watermarked/c4/c4-euclidean-pca  --human_text human/c4  --mode euclidean --a 0.28 --b 0.36 --use_pca
+  ```
+2. **With Pegasus paraphraser**:
+  - _Cosine-SimMark_:   
+  ```
+  python3 detection.py watermarked/c4/c4-cosine-pegasus --human_text human/c4  --mode cosine --a 0.68 --b 0.76 
+  ```
+  - _Euclidean-SimMark_:  
+  ```
+  python3 detection.py watermarked/c4/c4-euclidean-pca-pegasus  --human_text human/c4  --mode euclidean --a 0.28 --b 0.36 --use_pca    
+  ```  
+3. Additional paraphrasers data can be used similarly by changing the dataset path.
 
+  #### For other datasets, just replace the dataset paths and make sure you set the correct parameters for "human_text", "mode", "a", "b", and if necessary add "--use_pca" flag.
+4. For example for the BookSum dataset with Pegasus paraphraser:
+  - _Cosine-SimMark_:   
+  ```
+  python3 detection.py watermarked/booksum/booksum-cosine-pegasus --human_text human/booksum  --mode cosine --a 0.68 --b 0.76
+  ```
+  - _Euclidean-SimMark_:  
+  ```
+  python3 detection.py watermarked/booksum/booksum-euclidean-pegasus --human_text human/booksum  --mode euclidean --a 0.4 --b 0.55
+  ```
+### Hyperparameters
+The key parameters that can be used with detection.py are summarized as follows (for more details, see the code itself):
+- Data path: See the watermarked folder.
+- Mode (--mode): 'cosine' or 'euclidean'
+- Predefined Intervals ([a, b]):
+  - RealNews dataset (human_text should be human/c4):
+    - Cosine Similarity: [0.68, 0.76]
+    - Euclidean Distance: [0.28, 0.36] (must add --use_pca flag)
+  - BookSum dataset (human_text should be human/booksum):
+    - Cosine Similarity: [0.68, 0.76]
+    - Euclidean Distance: [0.4, 0.55] (DO NOT add --use_pca flag)
+  - Reddit-TIFU dataset (human_text should be human/tifu):
+      - Cosine Similarity: [0.68, 0.76]
+      - Euclidean Distance: [0.28, 0.36] (must add --use_pca flag)
+- Soft Count Decay Factor (--K): 250 is the default.
+- LLM (--model_path): 'AbeHou/opt-1.3b-semstamp' is the default.
+- Embedding Model (--embedder): 'hkunlp/instructor-large' is the default.
+
+For further details on hyperparameter selection, refer to the paper.
+
+### Text Quality Evaluation
+For text quality evaluation, you can run the following command for Euclidean-SimMark on the BookSum dataset for instance:
+```
+python3 eval_quality.py --dataset_name watermarked/booksum/booksum-euclidean --human_ref_name human/booksum
+```
+### Generating New Watermarked Data (requires GPU)
+  Coming Soon!
+
+#### Acknowledgement: 
+Some of the codes were partially adapted from these work (original github link: https://github.com/bohanhou14/semstamp):
+
+  - "SemStamp: A Semantic Watermark with Paraphrastic Robustness for Text Generation"  (https://arxiv.org/abs/2310.03991)
+
+  - "k-SemStamp: A Clustering-Based Semantic Watermark for Detection of Machine-Generated Text"  (https://arxiv.org/abs/2402.11399)
+  
 ## Citation
 If you found this repository helpful, please don't forget to cite our paper:
 ```BibTeX
-
+@misc{dabiriaghdam2025simmarkrobustsentencelevelsimilaritybased,
+      title={SimMark: A Robust Sentence-Level Similarity-Based Watermarking Algorithm for Large Language Models}, 
+      author={Amirhossein Dabiriaghdam and Lele Wang},
+      year={2025},
+      eprint={2502.02787},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2502.02787}, 
+}
 ```
 If you have any questions, please feel free to contact  [amirhossein@ece.ubc.ca](mailto:amirhossein@ece.ubc.ca).

@@ -1,0 +1,2 @@
+gen_ppl			tri_entro	sem_ent
+10.086	11.768	3.339
