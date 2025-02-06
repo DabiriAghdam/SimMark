@@ -34,8 +34,9 @@ It should be emphasized that soft counting is always applied during detection, r
 
 ## Performance
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/7a947de7-f1b9-4a86-a1a3-4f2391c57420" alt="image">
+  <img src="https://github.com/user-attachments/assets/f822ce70-eaeb-4f2b-b35c-626c06de1f61" alt="image">
 </div>
+
 Performance of different algorithms across datasets and paraphrasers, evaluated using <b>ROC-AUC↑</b>, <b>TP@FP=1%↑</b>, and <b>TP@FP=5%↑</b>, respectively, reported from left to right. Higher values indicate better performance across all metrics.
 In each column, <b>bold</b> values indicate the best performance for a given dataset and metric, while <u>underlined</u> values denote the second-best. 
 **<i>SimMark</i> consistently outperforms or is on par with other state-of-the-art methods across datasets and paraphrasers, and it is the best on average.**
