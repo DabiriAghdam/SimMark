@@ -2,7 +2,7 @@
 
 <p align="center">
   <br>
-  <a href="??"><img alt="Paper" src="https://img.shields.io/badge/📃-Paper-808080"></a>
+  <a href="https://arxiv.org/abs/2502.02787"><img alt="Paper" src="https://img.shields.io/badge/📃-Paper-808080"></a>
   <a href="https://simmark-llm.github.io/"><img alt="Website" src="https://img.shields.io/badge/%F0%9F%8C%90-Website-008080"></a>
 </p>
 
