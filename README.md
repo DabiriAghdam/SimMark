@@ -12,7 +12,7 @@ In this paper, we propose _**SimMark**_, a posthoc watermarking algorithm that m
 By leveraging the similarity of semantic sentence embeddings and rejection sampling to impose detectable statistical patterns imperceptible to humans, and employing a _soft_ counting mechanism, _SimMark_ achieves robustness against paraphrasing attacks.
 Experimental results demonstrate that _SimMark_ sets a new benchmark for robust watermarking of LLM-generated content, surpassing prior sentence-level watermarking techniques in robustness, sampling efficiency, and applicability across diverse domains, all while preserving the text quality.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/1550a812-fd1b-49a4-bb38-8a63b207773b" alt="image" width="70%">
+  <img src="https://github.com/user-attachments/assets/1550a812-fd1b-49a4-bb38-8a63b207773b" alt="image" width="72%">
 </div>
 
 The input text is divided into individual sentences $`X_1`$ to $`X_N`$, which are embedded using a semantic embedding model, with optional PCA for dimensionality reduction. 
@@ -34,7 +34,7 @@ It should be emphasized that soft counting is always applied during detection, r
 
 ## Performance
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/f822ce70-eaeb-4f2b-b35c-626c06de1f61" alt="image">
+  <img src="https://github.com/user-attachments/assets/6ffb283b-352e-44b8-81cc-6306dcc0c8b1" alt="image">
 </div>
 
 Performance of different algorithms across datasets and paraphrasers, evaluated using <b>ROC-AUC↑</b>, <b>TP@FP=1%↑</b>, and <b>TP@FP=5%↑</b>, respectively, reported from left to right. Higher values indicate better performance across all metrics.
