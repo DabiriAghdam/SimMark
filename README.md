@@ -36,7 +36,7 @@ It should be emphasized that soft counting is always applied during detection, r
 <div align="center">
   <img src="https://github.com/user-attachments/assets/7a947de7-f1b9-4a86-a1a3-4f2391c57420" alt="image">
 </div>
-Performance of different algorithms across datasets and paraphrasers, evaluated using <b>ROC-AUC↑</b>, <b>TP@FP=1%↑</b>, and <b>TP@FP=5%↑</b>, respectively, reported from left to right. Higher values indicate better performance across all metrics.
+Performance of different algorithms across datasets and paraphrasers, evaluated using <b>ROC-AUC ↑</b>, <b>TP@FP=1% ↑</b>, and <b>TP@FP=5% ↑</b>, respectively, reported from left to right. Higher values indicate better performance across all metrics.
 In each column, <b>bold</b> values indicate the best performance for a given dataset and metric, while <u>underlined</u> values denote the second-best. 
 **<i>SimMark</i> consistently outperforms or is on par with other state-of-the-art methods across datasets and paraphrasers, and it is the best on average.**
 
@@ -46,7 +46,7 @@ In each column, <b>bold</b> values indicate the best performance for a given dat
 ```
 git clone https://github.com/DabiriAghdam/SimMark.git
 ```
-2. Create a virtual environment (recommended), and then install dependencies: 
+2. Create a virtual environment (python3.10 recommended), and then install dependencies: 
 ```
     pip3 install -r requirements.txt
 ```
@@ -58,7 +58,7 @@ git clone https://github.com/DabiriAghdam/SimMark.git
     python3 load_tifu.py
 ```
 ### Reproducing our results (requires GPU)
-#### For RealNews dataset as an example you can run the follwing:
+#### For RealNews dataset as an example you can run the following:
 1. **Without paraphrase**:
   - _Cosine-SimMark_:  
   ```
@@ -99,7 +99,7 @@ The key parameters that can be used with detection.py are summarized as follows 
     - Euclidean Distance: [0.28, 0.36] (must add --use_pca flag)
   - BookSum dataset (human_text should be human/booksum):
     - Cosine Similarity: [0.68, 0.76]
-    - Euclidean Distance: [0.4, 0.55] (DO NOT add --use_pca flag)
+    - Euclidean Distance: [0.4, 0.55] (**DO NOT** add --use_pca flag for this dataset)
   - Reddit-TIFU dataset (human_text should be human/tifu):
       - Cosine Similarity: [0.68, 0.76]
       - Euclidean Distance: [0.28, 0.36] (must add --use_pca flag)
@@ -114,8 +114,36 @@ For text quality evaluation, you can run the following command for Euclidean-Sim
 ```
 python3 eval_quality.py --dataset_name watermarked/booksum/booksum-euclidean --human_ref_name human/booksum
 ```
-### Generating New Watermarked Data (requires GPU)
-  Coming Soon!
+### Generating New Watermarked Text (requires GPU)
+  1. (Optional) If you want you can re-train a PCA model by running the following (first ensure the necessary data is loaded using ```load_c4.py```):
+  ```
+  python3 train_PCA.py --num_components 16 
+  ```
+  2. Generate a smaller subset of RealNews dataset (for example a subset of size n = 1000):
+  ```
+  python3 build_subset.py data/c4-val --n 1000
+  ```
+  3. Then to generate watermarked data run the following, with the appropriate parameters for ```human_text```, ```mode```, ```a```, ```b```, ```output```:   
+        - _Cosine-SimMark_: 
+        ```
+        python3 sampling.py data/c4-val-1000  --output c4-cosine-new  --a 0.68 --b 0.76 --mode cosine 
+        ```
+        - _Euclidean-SimMark_:
+        ```
+        python3 sampling.py data/c4-val-1000  --output c4-euclidean-new  --a 0.28 --b 0.36 --mode euclidean --use_pca
+        ```
+  4.(Optional) If you want to apply paraphrasing you can run this for Pegasus-bigram paraphraser, for example with 25 beams:
+  ```
+  python3 paraphrase_gen.py c4-cosine-new --paraphraser pegasus-bigram --num_beams 25
+  ```
+  _You can replace ```pegasus-bigram``` with other available paraphrasers._
+  
+  5. You can then detect watermarks (before and after paraphrasing):
+  ```
+  python3 detection.py c4-cosine-new --human_text human/c4  --mode cosine --a 0.68 --b 0.76
+  python3 detection.py c4-cosine-new-pegasus-bigram=True-num_beams=25-threshold=0.1  --human_text human/c4  --mode cosine --a 0.68 --b 0.76
+  ```
+
 
 #### Acknowledgement: 
 Some of the codes were partially adapted from these work (original github link: https://github.com/bohanhou14/semstamp):
