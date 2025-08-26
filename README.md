@@ -12,7 +12,7 @@ This is the official repo for  <a href="https://arxiv.org/abs/2502.02787">_SimMa
 The widespread adoption of large language models (LLMs) necessitates reliable methods to detect LLM-generated text. We introduce **_SimMark_**, a robust sentence-level watermarking algorithm that makes LLMs' outputs traceable without requiring access to model internals, making it compatible with both open and API-based LLMs. By leveraging the similarity of semantic sentence embeddings combined with rejection sampling to embed detectable statistical patterns imperceptible to humans, and employing a *soft* counting mechanism, *SimMark* achieves robustness against paraphrasing attacks. Experimental results demonstrate that *SimMark* sets a new benchmark for robust watermarking of LLM-generated content, surpassing prior sentence-level watermarking techniques in robustness, sampling efficiency, and applicability across diverse domains, all while maintaining the text quality and fluency.
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/1550a812-fd1b-49a4-bb38-8a63b207773b" alt="image" width="72%">
+  <img src="https://github.com/user-attachments/assets/1550a812-fd1b-49a4-bb38-8a63b207773b" alt="A high-level overview of SimMark detection algorithm" width="72%">
 </div>
 
 A high-level overview of *SimMark* detection algorithm. The input text is divided into individual sentences $`X_1`$ to $`X_N`$, which are embedded using a semantic embedding model. The similarity between consecutive sentence embeddings is computed. Sentences with similarities within a predefined interval $`[a, b]`$ are considered $`\color{ForestGreen}\textbf{valid}`$, while those outside are $`\textcolor{BrickRed}{\textbf{invalid}}`$.  A statistical test is performed using the count of $`\textcolor{ForestGreen}{\textbf{valid}}`$ sentences to determine whether the text is watermarked.
@@ -28,13 +28,13 @@ A high-level overview of *SimMark* detection algorithm. The input text is divide
 
 ## Detection Performance
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/5f914fd6-888e-4c27-a73e-59890d712d1e" alt="image">
+  <img src="https://github.com/user-attachments/assets/5f914fd6-888e-4c27-a73e-59890d712d1e" alt="Performance of different algorithms across datasets and paraphrasers">
 </div>
 
 Performance of different algorithms across datasets and paraphrasers, evaluated using <b>ROC-AUC ↑</b> / <b>TP@FP=1% ↑</b> / <b>TP@FP=5% ↑</b>, respectively (↑: higher is better), reported from left to right. In each column, <b>bold</b> values indicate the best performance for a given dataset and metric, while <u>underlined</u> values denote the second-best. **<i>SimMark</i> consistently outperforms or is on par with other state-of-the-art methods across datasets and paraphrasers, and it is the best on average.**
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/fda28ed4-b1d5-460b-898a-6a090991a6ba"" alt="image">
+  <img src="https://github.com/user-attachments/assets/fda28ed4-b1d5-460b-898a-6a090991a6ba"" alt="Averaged detection performance of different watermarking methods under various paraphrasing attacks", width="66%">
 </div>
 
 Detection performance of different watermarking methods under various paraphrasing attacks, measured by TP@FP=1\% ↑ and averaged across all three datasets (RealNews, BookSum, Reddit-TIFU). Each axis corresponds to a specific paraphrasing attack method (e.g., Pegasus-Bigram), and higher values are better. Our methods, $`\color{Orange}{cosine-SimMark}`$ and $`\color{Emerald}{Euclidean-SimMark}`$, consistently outperform or match baselines across most paraphrasers, especially under more challenging conditions such as bigram-level paraphrasing.
